@@ -12,3 +12,4 @@ class CreateUserController {
         return response.json(user);
     }
 }
+export { CreateUserController }
