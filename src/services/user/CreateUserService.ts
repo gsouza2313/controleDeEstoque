@@ -18,7 +18,7 @@ class CreateUserService{
         }
         const passwordHash = await hash(password, 8);
         
-        const user = prismaClient.user.create({
+        const user = await prismaClient.user.create({
             data: {
                 name: name,
                 email: email,
