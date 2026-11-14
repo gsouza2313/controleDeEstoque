@@ -6,6 +6,7 @@ import { DetailUserController } from "./controllers/user/DetailUserController";
 import { RemoveUserController } from "./controllers/user/RemoveUserController";
 import { CreateCategoryController } from "./controllers/category/CreateCategoryController";
 import { EditCategoryController } from "./controllers/category/EditCategoryController";
+import { ListCategoryController } from "./controllers/category/ListCategoryController";
 
 const router = Router();
 router.get("/", (request: Request, response: Response) => {
@@ -23,5 +24,6 @@ router.delete('/user/remove', new RemoveUserController().handle);
 
 router.post('/category', isAuthenticated, new CreateCategoryController().handle);
 router.patch('/category/edit', isAuthenticated, new EditCategoryController().handle);
+router.get('/category/all', isAuthenticated, new ListCategoryController().handle);
 
 export { router };
