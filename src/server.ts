@@ -1,10 +1,13 @@
+import "dotenv/config";
 import express, { Request, Response, NextFunction } from "express";
-// import "express-async-errors";
+import "express-async-errors";
+import cors from "cors";
 import { router } from './routes';
 
 const app = express();
 const port = 3333;
 app.use(express.json());
+app.use(cors());
 app.use(router);
 
 app.use((err: Error, request: Request, response: Response, next: NextFunction) => {
