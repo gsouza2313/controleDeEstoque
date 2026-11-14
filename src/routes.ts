@@ -3,6 +3,10 @@ import { CreateUserController } from "./controllers/user/CreateUserController";
 import { AuthUserController } from "./controllers/user/AuthUserController"
 
 const router = Router();
+router.get("/", (request: Request, response: Response) => {
+    return response.json({ ok: true });
+});
+
 router.get("/test", (request: Request, response: Response) => {
     return response.json({ ok: true });
 });

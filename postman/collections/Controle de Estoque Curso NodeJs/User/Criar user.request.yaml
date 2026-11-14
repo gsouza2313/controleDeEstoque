@@ -1,4 +1,17 @@
 $kind: http-request
-url: ""
-method: GET
+url: http://localhost:3333/user
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: "{\r
+
+    \t\"name\": \"Guilherme\",\r
+
+    \t\"email\": \"guilherme@teste.com\",\r
+
+    \t\"password\": \"123456\"\r
+
+    }"
 order: 1000
