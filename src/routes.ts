@@ -10,6 +10,7 @@ import { ListCategoryController } from "./controllers/category/ListCategoryContr
 import { RemoveCategoryController } from "./controllers/category/RemoveCategoryController";
 import multer from "multer";
 import uploadConfig from "./config/multer";
+import { CreateProductController } from "./controllers/product/CreateProductController";
 
 
 
@@ -22,15 +23,19 @@ router.get("/", (request: Request, response: Response) => {
 router.get("/test", (request: Request, response: Response) => {
     return response.json({ ok: true });
 });
-
+//User Routes
 router.post('/user', new CreateUserController().handle);
 router.post('/session', new AuthUserController().handle);
 router.get('/me', isAuthenticated, new DetailUserController().handle);
 router.delete('/user/remove', new RemoveUserController().handle);
 
+//Category Routes
 router.post('/category', isAuthenticated, new CreateCategoryController().handle);
 router.patch('/category/edit', isAuthenticated, new EditCategoryController().handle);
 router.get('/category/all', isAuthenticated, new ListCategoryController().handle);
 router.delete('/category/remove', isAuthenticated, new RemoveCategoryController().handle);
+
+//Product Routes
+router.post('/product', isAuthenticated, upload.single("file") as any, new CreateProductController().handle);
 
 export { router };
