@@ -13,6 +13,7 @@ import uploadConfig from "./config/multer";
 import { CreateProductController } from "./controllers/product/CreateProductController";
 import { EditProductController } from "./controllers/product/EditProductController";
 import { ListProductByCategoryController } from "./controllers/product/ListProductByCategoryController";
+import { RemoveProductController } from "./controllers/product/RemoveProductController";
 
 
 
@@ -41,6 +42,7 @@ router.delete('/category/remove', isAuthenticated, new RemoveCategoryController(
 router.post('/product', isAuthenticated, upload.single("file") as any, new CreateProductController().handle);
 router.patch('/product/edit', isAuthenticated, upload.single("file") as any, new EditProductController().handle);
 router.get('/product', isAuthenticated, new ListProductByCategoryController().handle);
+router.delete('/product/remove', isAuthenticated, new RemoveProductController().handle)
 
 
 export { router };
