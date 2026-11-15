@@ -11,9 +11,15 @@ import { RemoveCategoryController } from "./controllers/category/RemoveCategoryC
 import multer from "multer";
 import uploadConfig from "./config/multer";
 import { CreateProductController } from "./controllers/product/CreateProductController";
+import { DetailProductController } from "./controllers/product/DetailProductController";
 import { EditProductController } from "./controllers/product/EditProductController";
 import { ListProductByCategoryController } from "./controllers/product/ListProductByCategoryController";
 import { RemoveProductController } from "./controllers/product/RemoveProductController";
+import { CreateSupplierController } from "./controllers/supplier/CreateSupplierController";
+import { DetailSupplierController } from "./controllers/supplier/DetailSupplierController";
+import { EditSupplierController } from "./controllers/supplier/EditSupplierController";
+import { ListSupplierController } from "./controllers/supplier/ListSupplierController";
+import { RemoveSupplierController } from "./controllers/supplier/RemoveSupplierController";
 
 
 
@@ -40,9 +46,19 @@ router.delete('/category/remove', isAuthenticated, new RemoveCategoryController(
 
 //Product Routes
 router.post('/product', isAuthenticated, upload.single("file") as any, new CreateProductController().handle);
+router.post('/products', isAuthenticated, upload.single("file") as any, new CreateProductController().handle);
 router.patch('/product/edit', isAuthenticated, upload.single("file") as any, new EditProductController().handle);
 router.get('/product', isAuthenticated, new ListProductByCategoryController().handle);
-router.delete('/product/remove', isAuthenticated, new RemoveProductController().handle)
+router.get('/products/:id', isAuthenticated, new DetailProductController().handle);
+router.delete('/product/remove', isAuthenticated, new RemoveProductController().handle);
+
+//Supplier Routes
+router.post('/suppliers', isAuthenticated, new CreateSupplierController().handle);
+router.get('/suppliers', isAuthenticated, new ListSupplierController().handle);
+router.get('/suppliers/:id', isAuthenticated, new DetailSupplierController().handle);
+router.put('/suppliers/:id', isAuthenticated, new EditSupplierController().handle);
+router.patch('/suppliers/:id', isAuthenticated, new EditSupplierController().handle);
+router.delete('/suppliers/:id', isAuthenticated, new RemoveSupplierController().handle);
 
 
 export { router };
