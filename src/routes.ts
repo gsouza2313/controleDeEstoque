@@ -20,6 +20,7 @@ import { DetailSupplierController } from "./controllers/supplier/DetailSupplierC
 import { EditSupplierController } from "./controllers/supplier/EditSupplierController";
 import { ListSupplierController } from "./controllers/supplier/ListSupplierController";
 import { RemoveSupplierController } from "./controllers/supplier/RemoveSupplierController";
+import { SaleProductController } from "./controllers/sale/SaleProductController";
 
 
 
@@ -60,5 +61,7 @@ router.put('/suppliers/:id', isAuthenticated, new EditSupplierController().handl
 router.patch('/suppliers/:id', isAuthenticated, new EditSupplierController().handle);
 router.delete('/suppliers/:id', isAuthenticated, new RemoveSupplierController().handle);
 
+//Sale Routes
+router.patch('/sale/product', isAuthenticated, new SaleProductController().handle);
 
 export { router };
