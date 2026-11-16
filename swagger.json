@@ -2,7 +2,73 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Controle de Estoque API",
+    "description": "Esta API tem como objetivo facilitar o controle de estoque da sua empresa",
+    "termOfService": "http://localhost:3333/terms",
+    "contact": {
+        "email": "guilhermesouza@byronsolutions.com"
+    },
     "version": "1.0.0"
   },
-  "paths": {}
+  "paths": {
+    "/v1/user": {
+        "post": {
+            "description": "Criar usuário",
+            "requestBody": {
+                "description": "Dados necessários para a criação de um novo usuário",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/RequestCreateUser"
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ResponseCreateUser"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+  },
+  "components": {
+    "schemas": {
+        "RequestCreateUser": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "ResponseCreateUser": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                }
+            }
+        }
+
+    },
+    "securitySchemes": {}
+}
 }
