@@ -2,6 +2,12 @@
 workspace:
   id: 6bcd090b-86f8-430a-887f-f277c18226eb
 
+# Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
+
+cloudResources:
+  collections:
+    ../postman/collections/Controle de Estoque: c2096608-6798-4a74-8a23-042eecb119d2
+
 # All resources in the `postman/` folder are automatically registered in Local View.
 # Point to additional files outside the `postman/` folder to register them individually. Example:
 #localResources:

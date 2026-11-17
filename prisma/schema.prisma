@@ -47,11 +47,28 @@ model Product {
   created_at  DateTime? @default(now())
   updated_at  DateTime? @default(now())
 
-  category    Category @relation(fields: [category_id], references: [id])
+  category    Category  @relation(fields: [category_id], references: [id])
   category_id String
+  supplier    Supplier? @relation(fields: [supplierId], references: [id])
+  supplierId  String?
   items       Item[]
 
   @@map("products")
+}
+
+model Supplier {
+  id         String    @id @default(uuid())
+  name       String
+  email      String?
+  phone      String?
+  cnpj       String?
+  address    String?
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  products Product[]
+
+  @@map("suppliers")
 }
 
 model Item {
