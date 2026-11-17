@@ -1,0 +1,44 @@
+$kind: http-request
+url: "{{baseUrl}}/products"
+method: POST
+body:
+  type: formdata
+  content:
+    - type: text
+      key: name
+      value: Notebook Gamer
+    - type: text
+      key: price
+      value: "4500.00"
+    - type: text
+      key: description
+      value: Notebook com placa de vídeo dedicada
+    - type: text
+      key: category_id
+      value: "{{categoryId}}"
+    - type: text
+      key: amount
+      value: "10"
+    - type: text
+      key: supplierId
+      value: "{{supplierId}}"
+    - type: file
+      key: file
+      src:
+        - ""
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+      const jsonData = pm.response.json();
+      pm.test("Produto criado com supplierId", function () {
+          pm.expect(jsonData).to.have.property("id");
+          pm.expect(jsonData.supplierId).to.eql(pm.collectionVariables.get("supplierId"));
+      });
+      if (jsonData.id) {
+          pm.collectionVariables.set("productId", jsonData.id);
+      }
+    language: text/javascript
+order: 4000

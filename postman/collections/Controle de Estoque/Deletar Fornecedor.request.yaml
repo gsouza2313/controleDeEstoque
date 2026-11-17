@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{baseUrl}}/suppliers/{{supplierId}}"
+method: DELETE
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+      const jsonData = pm.response.json();
+      pm.test("Mensagem de sucesso", function () {
+          pm.expect(jsonData.message).to.eql("Supplier deleted successfully!");
+      });
+    language: text/javascript
+order: 8000

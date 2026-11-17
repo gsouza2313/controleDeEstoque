@@ -1,0 +1,24 @@
+$kind: http-request
+url: "{{baseUrl}}/suppliers/{{supplierId}}"
+method: PATCH
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "name": "Fornecedor Tech Atualizado Ltda",
+      "phone": "(11) 98888-8888"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+      const jsonData = pm.response.json();
+      pm.test("Fornecedor atualizado", function () {
+          pm.expect(jsonData.name).to.eql("Fornecedor Tech Atualizado Ltda");
+      });
+    language: text/javascript
+order: 6000

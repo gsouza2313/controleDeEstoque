@@ -1,0 +1,14 @@
+$kind: collection
+description: Collection para testar o fluxo completo de autenticação, CRUD de Supplier e associação com Product.
+variables:
+  baseUrl: http://localhost:3333/v1
+  token: ""
+  categoryId: ""
+  supplierId: ""
+  productId: ""
+auth:
+  - id: c8f0167b-3779-4ad8-a450-494bec2948cd
+    type: bearer
+    name: bearer auth
+    credentials:
+      token: "{{token}}"

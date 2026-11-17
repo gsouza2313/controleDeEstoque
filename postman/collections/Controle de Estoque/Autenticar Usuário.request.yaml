@@ -1,0 +1,29 @@
+$kind: http-request
+url: "{{baseUrl}}/session"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "email": "admin@teste.com",
+      "password": "123456"
+    }
+auth:
+  type: noauth
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+      const jsonData = pm.response.json();
+      pm.test("Token retornado", function () {
+          pm.expect(jsonData).to.have.property("token");
+      });
+      if (jsonData.token) {
+          pm.collectionVariables.set("token", jsonData.token);
+      }
+    language: text/javascript
+order: 2000
