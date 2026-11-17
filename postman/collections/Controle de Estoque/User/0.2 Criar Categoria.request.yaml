@@ -1,0 +1,23 @@
+$kind: http-request
+url: "{{baseUrl}}/category"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "name": "Eletrônicos"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+      const jsonData = pm.response.json();
+      if (jsonData.id) {
+          pm.collectionVariables.set("categoryId", jsonData.id);
+      }
+    language: text/javascript
+order: 2000

@@ -1,0 +1,3 @@
+$kind: collection
+description: Use estas requisições caso ainda não tenha um usuário ou categoria cadastrados no banco.
+order: 1000

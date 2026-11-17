@@ -1,0 +1,452 @@
+{
+	"info": {
+		"_postman_id": "c7a8e910-4b2c-4f1a-9e8b-1234567890ab",
+		"name": "Controle de Estoque - Fluxo Supplier & Product",
+		"description": "Collection para testar o fluxo completo de autenticação, CRUD de Supplier e associação com Product.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3333/v1",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "categoryId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "supplierId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "productId",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "0. Pré-requisitos (Opcional)",
+			"description": "Use estas requisições caso ainda não tenha um usuário ou categoria cadastrados no banco.",
+			"item": [
+				{
+					"name": "0.1 Criar Usuário",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Admin Teste\",\n  \"email\": \"admin@teste.com\",\n  \"password\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "0.2 Criar Categoria",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"const jsonData = pm.response.json();",
+									"if (jsonData.id) {",
+									"    pm.collectionVariables.set(\"categoryId\", jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Eletrônicos\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/category",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"category"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "1. Autenticar Usuário (Obter Token)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"const jsonData = pm.response.json();",
+							"pm.test(\"Token retornado\", function () {",
+							"    pm.expect(jsonData).to.have.property(\"token\");",
+							"});",
+							"if (jsonData.token) {",
+							"    pm.collectionVariables.set(\"token\", jsonData.token);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"admin@teste.com\",\n  \"password\": \"123456\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/session",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"session"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2. Criar Fornecedor",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"const jsonData = pm.response.json();",
+							"pm.test(\"Fornecedor criado com ID\", function () {",
+							"    pm.expect(jsonData).to.have.property(\"id\");",
+							"});",
+							"if (jsonData.id) {",
+							"    pm.collectionVariables.set(\"supplierId\", jsonData.id);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Fornecedor Tech Ltda\",\n  \"email\": \"contato@fornecedortech.com\",\n  \"phone\": \"(11) 99999-9999\",\n  \"cnpj\": \"12.345.678/0001-90\",\n  \"address\": \"Rua Exemplo, 123 - São Paulo, SP\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/suppliers",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"suppliers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. Criar Produto Associado ao Fornecedor",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"const jsonData = pm.response.json();",
+							"pm.test(\"Produto criado com supplierId\", function () {",
+							"    pm.expect(jsonData).to.have.property(\"id\");",
+							"    pm.expect(jsonData.supplierId).to.eql(pm.collectionVariables.get(\"supplierId\"));",
+							"});",
+							"if (jsonData.id) {",
+							"    pm.collectionVariables.set(\"productId\", jsonData.id);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Notebook Gamer",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "4500.00",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Notebook com placa de vídeo dedicada",
+							"type": "text"
+						},
+						{
+							"key": "category_id",
+							"value": "{{categoryId}}",
+							"type": "text"
+						},
+						{
+							"key": "amount",
+							"value": "10",
+							"type": "text"
+						},
+						{
+							"key": "supplierId",
+							"value": "{{supplierId}}",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": ""
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/products",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. Buscar Produto (Verificar Dados do Fornecedor)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"const jsonData = pm.response.json();",
+							"pm.test(\"Dados do fornecedor vêm junto no produto\", function () {",
+							"    pm.expect(jsonData).to.have.property(\"supplier\");",
+							"    pm.expect(jsonData.supplier).to.be.an(\"object\");",
+							"    pm.expect(jsonData.supplier.id).to.eql(pm.collectionVariables.get(\"supplierId\"));",
+							"    pm.expect(jsonData.supplier.name).to.eql(\"Fornecedor Tech Ltda\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/products/{{productId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"products",
+						"{{productId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5. Atualizar Fornecedor",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"const jsonData = pm.response.json();",
+							"pm.test(\"Fornecedor atualizado\", function () {",
+							"    pm.expect(jsonData.name).to.eql(\"Fornecedor Tech Atualizado Ltda\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Fornecedor Tech Atualizado Ltda\",\n  \"phone\": \"(11) 98888-8888\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/suppliers/{{supplierId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"suppliers",
+						"{{supplierId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6. Deletar Produto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/product/remove?product_id={{productId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"product",
+						"remove"
+					],
+					"query": [
+						{
+							"key": "product_id",
+							"value": "{{productId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7. Deletar Fornecedor",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"const jsonData = pm.response.json();",
+							"pm.test(\"Mensagem de sucesso\", function () {",
+							"    pm.expect(jsonData.message).to.eql(\"Supplier deleted successfully!\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/suppliers/{{supplierId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"suppliers",
+						"{{supplierId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

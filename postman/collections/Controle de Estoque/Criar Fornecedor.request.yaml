@@ -1,0 +1,30 @@
+$kind: http-request
+url: "{{baseUrl}}/suppliers"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "name": "Fornecedor Tech Ltda",
+      "email": "contato@fornecedortech.com",
+      "phone": "(11) 99999-9999",
+      "cnpj": "12.345.678/0001-90",
+      "address": "Rua Exemplo, 123 - São Paulo, SP"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 201", function () {
+          pm.response.to.have.status(201);
+      });
+      const jsonData = pm.response.json();
+      pm.test("Fornecedor criado com ID", function () {
+          pm.expect(jsonData).to.have.property("id");
+      });
+      if (jsonData.id) {
+          pm.collectionVariables.set("supplierId", jsonData.id);
+      }
+    language: text/javascript
+order: 3000

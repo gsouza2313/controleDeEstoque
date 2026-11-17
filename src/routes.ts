@@ -57,7 +57,6 @@ router.delete('/product/remove', isAuthenticated, new RemoveProductController().
 router.post('/suppliers', isAuthenticated, new CreateSupplierController().handle);
 router.get('/suppliers', isAuthenticated, new ListSupplierController().handle);
 router.get('/suppliers/:id', isAuthenticated, new DetailSupplierController().handle);
-router.put('/suppliers/:id', isAuthenticated, new EditSupplierController().handle);
 router.patch('/suppliers/:id', isAuthenticated, new EditSupplierController().handle);
 router.delete('/suppliers/:id', isAuthenticated, new RemoveSupplierController().handle);
 
